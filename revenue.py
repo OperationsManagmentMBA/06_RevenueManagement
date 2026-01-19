@@ -4,12 +4,11 @@ __generated_with = "0.19.4"
 app = marimo.App(
     width="medium",
     app_title="Revenue Management",
-    layout_file="layouts/revenue.slides.json",
     css_file="d3.css",
 )
 
 
-@app.cell(hide_code=True)
+@app.cell
 async def _():
     # Only install packages in WebAssembly environment
     try:
@@ -607,7 +606,7 @@ def _(alt, mo, np, pl, sc):
 
     # Create histogram
     _hist = (
-        alt.Chart(_fcfs_results.to_pandas())
+        alt.Chart(alt.Data(values=_fcfs_results.to_dicts()))
         .mark_bar(color="#2563eb", opacity=0.7)
         .encode(
             x=alt.X("Revenue:Q", bin=alt.Bin(maxbins=30), title="Daily Revenue (€)"),
@@ -618,7 +617,7 @@ def _(alt, mo, np, pl, sc):
 
     # Add mean line
     _mean_rule = (
-        alt.Chart(pl.DataFrame({"x": [_mean_rev]}).to_pandas())
+        alt.Chart(alt.Data(values=pl.DataFrame({"x": [_mean_rev]}).to_dicts()))
         .mark_rule(strokeDash=[5, 5], color="#dc2626", strokeWidth=2)
         .encode(x="x:Q")
     )
@@ -887,7 +886,7 @@ def _(
             {"Q": q, "Revenue": rev} for q, rev in sorted(_explored.items())
         ])
         _points = (
-            alt.Chart(_df.to_pandas())
+            alt.Chart(alt.Data(values=_df.to_dicts()))
             .mark_circle(size=120, color="#2563eb")
             .encode(
                 x=alt.X("Q:Q", title="Protection Level (Q)", scale=alt.Scale(domain=[0, 100])),
@@ -896,7 +895,7 @@ def _(
             )
         )
         _line = (
-            alt.Chart(_df.to_pandas())
+            alt.Chart(alt.Data(values=_df.to_dicts()))
             .mark_line(color="#2563eb", strokeWidth=2, opacity=0.5)
             .encode(x="Q:Q", y="Revenue:Q")
         )
@@ -1038,7 +1037,7 @@ def _(
 
     # Distribution curve
     _dist_curve = (
-        alt.Chart(_dist_df.to_pandas())
+        alt.Chart(alt.Data(values=_dist_df.to_dicts()))
         .mark_area(opacity=0.3, color="#2563eb")
         .encode(x=alt.X("x:Q", title="High-fare demand"), y=alt.Y("density:Q", title="Probability density"))
     )
@@ -1049,21 +1048,21 @@ def _(
         "density": [yi for xi, yi in zip(_x, _y) if xi <= _Q_star],
     })
     _shaded_area = (
-        alt.Chart(_shaded_df.to_pandas())
+        alt.Chart(alt.Data(values=_shaded_df.to_dicts()))
         .mark_area(opacity=0.5, color="#2563eb")
         .encode(x="x:Q", y="density:Q")
     )
 
     # Vertical line at Q*
     _q_line = (
-        alt.Chart(pl.DataFrame({"Q": [_Q_star]}).to_pandas())
+        alt.Chart(alt.Data(values=pl.DataFrame({"Q": [_Q_star]}).to_dicts()))
         .mark_rule(strokeDash=[5, 5], color="#dc2626", strokeWidth=2)
         .encode(x="Q:Q")
     )
 
     # Q* label
     _q_label = (
-        alt.Chart(pl.DataFrame({"Q": [_Q_star], "y": [max(_y) * 0.8], "text": [f"Q* = {_Q_star}"]}).to_pandas())
+        alt.Chart(alt.Data(values=pl.DataFrame({"Q": [_Q_star], "y": [max(_y) * 0.8], "text": [f"Q* = {_Q_star}"]}).to_dicts()))
         .mark_text(align="left", dx=5, fontSize=14, color="#dc2626")
         .encode(x="Q:Q", y="y:Q", text="text:N")
     )
@@ -1244,7 +1243,7 @@ def _(alt, mo, np, pl, sc):
 
     # Create histogram of revenue (use bin step=150 to align with discrete values)
     _hist = (
-        alt.Chart(_sim_results.to_pandas())
+        alt.Chart(alt.Data(values=_sim_results.to_dicts()))
         .mark_bar(color="#2563eb", opacity=0.7)
         .encode(
             x=alt.X("Actual Revenue:Q", bin=alt.Bin(step=150), title="Daily Revenue (€)"),
@@ -1255,7 +1254,7 @@ def _(alt, mo, np, pl, sc):
 
     # Add mean line
     _mean_rule = (
-        alt.Chart(pl.DataFrame({"x": [_mean_revenue]}).to_pandas())
+        alt.Chart(alt.Data(values=pl.DataFrame({"x": [_mean_revenue]}).to_dicts()))
         .mark_rule(strokeDash=[5, 5], color="#dc2626", strokeWidth=2)
         .encode(x="x:Q")
     )
@@ -1519,7 +1518,7 @@ def _(
             {"Y": y, "Revenue": rev} for y, rev in sorted(_explored.items())
         ])
         _points = (
-            alt.Chart(_df.to_pandas())
+            alt.Chart(alt.Data(values=_df.to_dicts()))
             .mark_circle(size=120, color="#2563eb")
             .encode(
                 x=alt.X("Y:Q", title="Overbooking Level (Y)", scale=alt.Scale(domain=[0, 30])),
@@ -1528,7 +1527,7 @@ def _(
             )
         )
         _line = (
-            alt.Chart(_df.to_pandas())
+            alt.Chart(alt.Data(values=_df.to_dicts()))
             .mark_line(color="#2563eb", strokeWidth=2, opacity=0.5)
             .encode(x="Y:Q", y="Revenue:Q")
         )
@@ -1672,7 +1671,7 @@ def _(
 
     # Distribution curve
     _dist_curve = (
-        alt.Chart(_dist_df.to_pandas())
+        alt.Chart(alt.Data(values=_dist_df.to_dicts()))
         .mark_area(opacity=0.3, color="#2563eb")
         .encode(x=alt.X("x:Q", title="Number of no-shows"), y=alt.Y("density:Q", title="Probability density"))
     )
@@ -1683,21 +1682,21 @@ def _(
         "density": [yi for xi, yi in zip(_x, _y) if xi <= _Y_star],
     })
     _shaded_area = (
-        alt.Chart(_shaded_df.to_pandas())
+        alt.Chart(alt.Data(values=_shaded_df.to_dicts()))
         .mark_area(opacity=0.5, color="#2563eb")
         .encode(x="x:Q", y="density:Q")
     )
 
     # Vertical line at Y*
     _y_line = (
-        alt.Chart(pl.DataFrame({"Y": [_Y_star]}).to_pandas())
+        alt.Chart(alt.Data(values=pl.DataFrame({"Y": [_Y_star]}).to_dicts()))
         .mark_rule(strokeDash=[5, 5], color="#dc2626", strokeWidth=2)
         .encode(x="Y:Q")
     )
 
     # Y* label
     _y_label = (
-        alt.Chart(pl.DataFrame({"Y": [_Y_star], "y": [max(_y) * 0.8], "text": [f"Y* = {_Y_star}"]}).to_pandas())
+        alt.Chart(alt.Data(values=pl.DataFrame({"Y": [_Y_star], "y": [max(_y) * 0.8], "text": [f"Y* = {_Y_star}"]}).to_dicts()))
         .mark_text(align="left", dx=5, fontSize=14, color="#dc2626")
         .encode(x="Y:Q", y="y:Q", text="text:N")
     )
@@ -1991,7 +1990,7 @@ def _(alt, mo, pl, run_policy_comparison, sc):
 
     # Create bar chart for revenue comparison
     _revenue_chart = (
-        alt.Chart(_df_three.to_pandas())
+        alt.Chart(alt.Data(values=_df_three.to_dicts()))
         .mark_bar()
         .encode(
             x=alt.X("Policy:N", sort=["FCFS", "Booking Limits", "Overbooking"], title=None),
@@ -2025,7 +2024,7 @@ def _(alt, mo, pl, run_policy_comparison, sc):
     )
 
     _waste_chart = (
-        alt.Chart(_waste_data.to_pandas())
+        alt.Chart(alt.Data(values=_waste_data.to_dicts()))
         .mark_bar()
         .encode(
             x=alt.X("Policy:N", sort=["FCFS", "Booking Limits", "Overbooking"], title=None),
@@ -2289,7 +2288,7 @@ def _(
     })
 
     _bar_chart = (
-        alt.Chart(_compare_df.to_pandas())
+        alt.Chart(alt.Data(values=_compare_df.to_dicts()))
         .mark_bar()
         .encode(
             x=alt.X("Policy:N", sort=["FCFS (No RM)", "Booking Limits Only", "Overbooking Only", "Combined"], title=None),
