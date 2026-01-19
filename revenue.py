@@ -17,6 +17,7 @@ async def _():
 
         # Install required packages
         packages = [
+            "marimo",
             "polars",
             "altair",
             "numpy",
@@ -53,7 +54,7 @@ def _():
 def _(mo):
     # Slide classes for consistent presentation layout
     from dataclasses import dataclass
-    from typing import Optional as _Optional
+    from typing import Optional as _Optional, Any as _Any
     import html as _html
 
     # Slide constants
@@ -75,10 +76,10 @@ def _(mo):
         page_number: int
         layout_type: str = "side-by-side"
         subtitle: _Optional[str] = None
-        content1: _Optional[mo.core.MIME] = None
-        content2: _Optional[mo.core.MIME] = None
+        content1: _Optional[_Any] = None
+        content2: _Optional[_Any] = None
 
-        def _header(self) -> mo.core.MIME:
+        def _header(self) -> _Any:
             safe_title = _html.escape(self.title)
             return mo.Html(
                 f"""
@@ -89,7 +90,7 @@ def _(mo):
                 """
             )
 
-        def _footer(self) -> mo.core.MIME:
+        def _footer(self) -> _Any:
             safe_page = _html.escape(str(self.page_number))
             safe_chair = _html.escape(self.chair)
             left_html = f"Page {safe_page} &nbsp;&nbsp;|&nbsp;&nbsp; {safe_chair}"
@@ -111,7 +112,7 @@ def _(mo):
                 """
             )
 
-        def _title_layout(self) -> mo.core.MIME:
+        def _title_layout(self) -> _Any:
             safe_title = _html.escape(self.title)
             sub = (
                 f'<div class="title-slide-sub" style="font-size: 40px; margin: 0 0 16px 0; color: #374151;">{_html.escape(self.subtitle)}</div>'
@@ -140,7 +141,7 @@ def _(mo):
                 """
             )
 
-        def _one_column_layout(self) -> mo.core.MIME:
+        def _one_column_layout(self) -> _Any:
             content = (
                 mo.md(self.content1)
                 if isinstance(self.content1, str)
@@ -181,7 +182,7 @@ def _(mo):
                 """
             )
 
-        def _side_by_side_layout(self) -> mo.core.MIME:
+        def _side_by_side_layout(self) -> _Any:
             left_content = (
                 mo.md(self.content1)
                 if isinstance(self.content1, str)
@@ -235,7 +236,7 @@ def _(mo):
                 """
             )
 
-        def _section_layout(self) -> mo.core.MIME:
+        def _section_layout(self) -> _Any:
             safe_title = _html.escape(self.title)
             section_label = (
                 f'<div style="font-size: 20px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">{_html.escape(self.subtitle)}</div>'
@@ -271,7 +272,7 @@ def _(mo):
                 """
             )
 
-        def render(self) -> mo.core.MIME:
+        def render(self) -> _Any:
             if self.layout_type == "title":
                 return self._title_layout()
             elif self.layout_type == "section":
@@ -294,7 +295,7 @@ def _(mo):
             self.logo_url = logo_url
             self._page_counter = 0
 
-        def styles(self) -> mo.core.MIME:
+        def styles(self) -> _Any:
             return mo.Html(
                 f"""
                 <style>
