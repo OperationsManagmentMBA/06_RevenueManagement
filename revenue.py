@@ -4,8 +4,35 @@ __generated_with = "0.19.4"
 app = marimo.App(
     width="medium",
     app_title="Revenue Management",
+    layout_file="layouts/revenue.slides.json",
     css_file="d3.css",
 )
+
+
+@app.cell(hide_code=True)
+async def _():
+    # Only install packages in WebAssembly environment
+    try:
+        import micropip
+
+        # Install required packages
+        packages = [
+            "polars",
+            "altair",
+            "numpy",
+            "pyarrow",
+            "scipy",
+        ]
+
+        for pkg in packages:
+            print(f"Installing {pkg}...")
+            await micropip.install(pkg)
+
+        print("All packages installed.")
+    except ImportError:
+        # Running locally, packages should already be installed
+        print("Running in local mode, skipping micropip installation")
+    return
 
 
 @app.cell(hide_code=True)
