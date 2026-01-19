@@ -2009,14 +2009,17 @@ def _(alt, mo, pl, run_policy_comparison, sc):
     )
 
     # Create stacked bar for waste sources (only 3 policies)
+    # Convert to lists for WASM compatibility
+    _empty_list = _df_three["Empty"].to_list()
+    _rejected_list = _df_three["Rejected High"].to_list()
     _waste_data = pl.DataFrame(
         {
             "Policy": ["FCFS", "FCFS", "Booking Limits", "Booking Limits", "Overbooking", "Overbooking"],
             "Waste Type": ["Empty Rooms", "Rejected High-Fare", "Empty Rooms", "Rejected High-Fare", "Empty Rooms", "Rejected High-Fare"],
             "Count": [
-                _df_three["Empty"][0], _df_three["Rejected High"][0],
-                _df_three["Empty"][1], _df_three["Rejected High"][1],
-                _df_three["Empty"][2], _df_three["Rejected High"][2],
+                _empty_list[0], _rejected_list[0],
+                _empty_list[1], _rejected_list[1],
+                _empty_list[2], _rejected_list[2],
             ],
         }
     )
@@ -2090,10 +2093,14 @@ def _(mo, run_policy_comparison, sc):
         C=100, r_L=80, r_H=200, c_bump=400, mean_H=50, std_H=15, noshow_rate=0.10
     )
 
-    _bl_rev = _comp_df["Revenue"][1]
-    _bl_empty = _comp_df["Empty"][1]
-    _ob_rev = _comp_df["Revenue"][2]
-    _ob_rejected = _comp_df["Rejected High"][2]
+    # Convert to lists for WASM compatibility
+    _rev_list = _comp_df["Revenue"].to_list()
+    _empty_list = _comp_df["Empty"].to_list()
+    _rejected_list = _comp_df["Rejected High"].to_list()
+    _bl_rev = _rev_list[1]
+    _bl_empty = _empty_list[1]
+    _ob_rev = _rev_list[2]
+    _ob_rejected = _rejected_list[2]
 
     slide_3_3.content1 = mo.md(
         f"""
